@@ -21,16 +21,15 @@ export const attachTitle = (arg) => {
  */
 
 export const getPromise = () => {
-  return Promise.resolve('MANHATTAN');
-};
+  let val = 'MANHATTAN';
+  return Promise.resolve(val)
+    .then(attachTitle)
+    .then((result) => {
+      console.log(result);
+      return result;
+    });
+} 
 
-// Promise Chain
-const promiseChain = getPromise()
-  .then(attachTitle)
-  .then((result) => {
-    console.log(result); //Prints 'DR. MANHATTAN'
-    return result;
-  })
 
 // === TEST YOURSELF ===
 // Once you're finished run the test with "npm run test-5"

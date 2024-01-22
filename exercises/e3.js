@@ -21,7 +21,7 @@ export const getPromise = (anytype) => {
     });
   } else {
     return 0;
-  };
+  }
 };
 
 /**
@@ -37,14 +37,15 @@ export const getPromise = (anytype) => {
  */
 export const updateSumValue = () => {
   let sum = 2;
-
-  return getPromise(120).then(
-    (value) => {
+  
+  getPromise(120)
+    .then((value) => {
       sum += value;
-      sum += 8;
-      return sum;
     });
-};
+
+  sum += 8;
+  return sum;
+}
 
 // === TEST YOURSELF ===
 // Once you're finished run the test with "npm run test-3"

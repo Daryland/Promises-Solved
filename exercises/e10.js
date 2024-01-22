@@ -24,7 +24,11 @@ export const promiseArr = [promise1, promise2, promise3, promise4];
  */
 
 // Your code goes here...
-export const handlePromise1 = Promise.any(promiseArr).catch((e) => e);
+export const handlePromise1 = Promise.allSettled(promiseArr)
+  .then((results) => {
+    const rejected = results.find(r => r.status === 'rejected');
+    return rejected.reason;
+  });
 
 /**
  * @task
@@ -41,7 +45,11 @@ export const handlePromise1 = Promise.any(promiseArr).catch((e) => e);
  */
 
 // Your code goes here...
-
+export const handlePromise2 = (promiseArr) => {
+  return Promise.any(promiseArr)
+    .then(() => promise3)
+    .catch((error) => error);
+};
 /**
  * @task
  * * Create the handlePromise3 function that follows:
@@ -57,6 +65,23 @@ export const handlePromise1 = Promise.any(promiseArr).catch((e) => e);
  */
 
 // Your code goes here...
+export const handlePromise3 = (promiseArr) => {
+
+  return Promise.allSettled(promiseArr.map(p => Promise.resolve(p)))
+    
+    .then(results => {
+    
+      return results.map(result => ({
+        status: result.status,
+        value: result.value  
+      }));
+      
+    })
+    
+    .catch(err => err);
+
+}
+
 
 /**
  * @task
@@ -66,7 +91,10 @@ export const handlePromise1 = Promise.any(promiseArr).catch((e) => e);
  * The value of newPromiseArr MUST have more than one promise in the array!
  */
 
-export const newPromiseArr = promiseArr.filter(/* <Your code goes here>*/);
+export const newPromiseArr = promiseArr.filter((promise, index) => {
+  return index === promiseArr.length - 1 || promise !== promise4;
+});
+
 
 // Do NOT refactor or update handlePromise4 function, it's all set to work
 export const handlePromise4 = (arr) => {

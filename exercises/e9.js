@@ -66,14 +66,16 @@ export function onReject(argument) {
  */
 
 // Your code goes here...
-export const promise = Promise.resolve()
-  .then(() => iterate(1))
-  .then(() => iterate(2))
-  .then(() => iterate(3))
-  .then(() => iterate(4))
-  .then(() => iterate(5))
-  .then(() => alwaysThrows())
-  .then(() => iterate(6))
+export const promise = Promise.resolve(iterate(1))
+  .then((res) => iterate(res))
+  .then((res) => iterate(res))
+  .then((res) => iterate(res))
+  .then((res) => iterate(res))
+  .then(alwaysThrows)
+  .then((res) => iterate(res))
+  .then((res) => iterate(res))
+  .then((res) => iterate(res))
+  .then((res) => iterate(res))
   .catch(onReject);
 
 

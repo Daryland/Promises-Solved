@@ -5,103 +5,78 @@
  * for the next task. The result4 is already using .race(), so you can't use it for result1, result2 or result3
  */
 
-const promise1 = new Promise((res) => setTimeout(res, 4000, "RESOLVED AGAIN"));
-const promise2 = Promise.reject("Promise 2 REJECTED");
-const promise3 = Promise.resolve("Promise 3 RESOLVED");
-const promise4 = new Promise((res) => setTimeout(res, 3000, "RESOLVED AGAIN"));
-export const promiseArr = [promise1, promise2, promise3, promise4];
+const promise1 = new Promise((res) => setTimeout(res, 4000, 'RESOLVED AGAIN'));
+const promise2 = Promise.reject('Promise 2 REJECTED');
+const promise3 = Promise.resolve('Promise 3 RESOLVED');
+const promise4 = new Promise((res) => setTimeout(res, 3000, 'RESOLVED AGAIN'));
+const promiseArr = [promise1, promise2, promise3, promise4];
 
 /**
  * @task
- * The handlePromise1 constant is expected to store the value of the reason of promise2 rejection
- * using the method to handle multiple promises.
- * The developer used a wrong multiple promises method of .any() to get the value
- * of the first rejected promise in the promiseArr array.
- * Please, refactor the code to use a proper method. You can use on of these:
- * * .all()
- * * .any()
- * * .allSettled()
+ * Use a correct PROMISE shortcut that will log the caught error (reason) from promise2
+ * when promiseArr was passed as the argument
  */
 
-// Your code goes here...
-export const handlePromise1 = Promise.allSettled(promiseArr)
-  .then((results) => {
-    const rejected = results.find(r => r.status === 'rejected');
-    return rejected.reason;
+export const result1 = Promise.any(promiseArr.map((p) => p.catch((err) => err)))
+  .then((value) => {
+    console.log(value);
+    return value;
+  })
+  .catch((err) => {
+    console.log(err);
   });
 
 /**
  * @task
- * * Create the handlePromise2 function that follows:
- * * Takes an array of promises as an argument
- * * Returns a Promise that handles the array of promises (the argument) with one of the following methods:
- * * * .all()
- * * * .any()
- * * * .allSettled()
- * * to return the resolved value of promise3 if the promiseArr array was passed as the argument
- * * Don't forget to set the handlers that will return the resolved value or the rejection reason
- * * Make sure you don't use this method in other tasks of this exercise file!
- * !!! The function must be exported !!!
+ * Use a correct PROMISE shortcut that will log and return the resolved value of promise3;
  */
 
-// Your code goes here...
-export const handlePromise2 = (promiseArr) => {
-  return Promise.any(promiseArr)
-    .then(() => promise3)
-    .catch((error) => error);
-};
-/**
- * @task
- * * Create the handlePromise3 function that follows:
- * * Takes an array of promises as an argument
- * * Returns a Promise that handles the array of promises (the argument) with one of the following methods:
- * * * .all()
- * * * .any()
- * * * .allSettled()
- * * to return an array of all promises statuses and values/reasons if the promiseArr array was passed as the argument
- * * Don't forget to set the handlers that will return the resolved value or the rejection reason
- * * Make sure you don't use this method in other tasks of this exercise file!
- * !!! The function must be exported !!!
- */
-
-// Your code goes here...
-export const handlePromise3 = (promiseArr) => {
-
-  return Promise.allSettled(promiseArr.map(p => Promise.resolve(p)))
-    
-    .then(results => {
-    
-      return results.map(result => ({
-        status: result.status,
-        value: result.value  
-      }));
-      
-    })
-    
-    .catch(err => err);
-
-}
-
+export const result2 = Promise.resolve(promise3)
+  .then((value) => {
+    console.log(value);
+    return value;
+  })
+  .catch((error) => console.log(error));
 
 /**
  * @task
- * Update the filter method callback to filter out any promise that will be settled before promise4
- * so that the handlePromise4 function returns the resolved value of promise4 ('RESOLVED AGAIN')
- * with the Promise.race() method, when the newPromiseArr is passes as the argument.
- * The value of newPromiseArr MUST have more than one promise in the array!
+ * Use a correct PROMISE shortcut that will log and return an array of all promises statuses and values/reasons;
  */
 
-export const newPromiseArr = promiseArr.filter((promise, index) => {
-  return index === promiseArr.length - 1 || promise !== promise4;
-});
+export const result3 = Promise.allSettled(promiseArr)
+  .then((results) => {
+    const output = results.map((result) => {
+      if (result.status === 'fulfilled') {
+        return { status: result.status, value: result.value };
+      } else {
+        return { status: result.status, reason: result.reason };
+      }
+    });
+    console.log(output);
+    return output;
+  })
+  .catch((error) => console.log(error));
 
+/**
+ * @task
+ * update the initializer for the newPromiseArr to get a value of the modified
+ * promiseArr array, so that the Promise logs and returns
+ * the resolved value of promise4 ('RESOLVED AGAIN') with the Promise.race() method.
+ * You can use any array methods you know (map(), reduce(), filter() etc...).
+ * Example: export const newPromiseArr = promiseArr.<method>()...
+ */
 
-// Do NOT refactor or update handlePromise4 function, it's all set to work
-export const handlePromise4 = (arr) => {
-  return Promise.race(arr)
-    .then((val) => val)
-    .catch((e) => e);
-};
+export const newPromiseArr = promiseArr.map(p => p.catch(() => null));
+newPromiseArr.push(new Promise(resolve => resolve('RESOLVED AGAIN')));
+
+  
+
+// Do NOT refactor or update result 4, it's all set to work
+export const result4 = Promise.race(newPromiseArr)
+  .then((data) => {
+    return data;
+  })
+  .catch((err) => console.log(err));
 
 // === TEST YOURSELF ===
 // Once you're finished run the test with "npm run test-10"

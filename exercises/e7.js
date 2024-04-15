@@ -22,11 +22,9 @@
 export function parsePromised(json) {
   return new Promise((resolve, reject) => {
     try {
-      const parsedJSON = JSON.parse(json);
-      resolve(parsedJSON);
+      resolve(JSON.parse(json));
     } catch (error) {
       reject(error)
-      console.log(error);
     }
   });
 }
@@ -59,11 +57,12 @@ export const handlePromise = (promise) => {
   return promise
   .then((value) => value)
   .catch((err) => {
-    if (err.message) {
-      return onReject(err);
-    } else {
-      return err;
-    }
+    return err.message ? onReject(err) : err
+    //if (err.message) {
+    //  return onReject(err);
+    //} else {
+    //  return err;
+    //}
   });
 };
 

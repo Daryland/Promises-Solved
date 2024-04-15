@@ -19,16 +19,10 @@ export const getPromise = new Promise((resolve) => {
   setTimeout(() => {
     resolve('The PROMISE was RESOLVED');
   }, 1000);
-});
-
-getPromise.then(
+}).then(
   (value) => {
     console.log(value); // log the resolved promise value
     return value; // return the value
-  },
-  (reason) => {
-    console.log(reason); // log the rejection reason if needed
-    return reason; // return the reason
   }
 );
 // === TEST YOURSELF ===

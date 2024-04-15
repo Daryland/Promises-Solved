@@ -14,10 +14,10 @@
  * * getPromise(num) function must be exported
  * Example: export const getPromise(num) => return <Your code of promise>
  */
-export const getPromise = (anytype) => {
-  if (Number.isInteger(anytype)) {
+export const getPromise = (arg) => {
+  if (Number.isInteger(arg)) {
     return new Promise((resolve) => {
-      resolve(anytype);
+      resolve(arg);
     });
   } else {
     return 0;
